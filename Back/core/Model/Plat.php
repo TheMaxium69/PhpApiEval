@@ -32,4 +32,25 @@ class Plat extends Model
         return $plats;
     }
 
+    /**
+     * 
+     * Create un plat
+     * 
+     */
+
+    function insert(string $name, int $price, string $description, int $restaurant_id)
+    {
+
+        $resultat = $this->pdo->prepare("INSERT INTO `plats`(`name`, `price`, `description`, `restaurant_id`) VALUES (:name, :price, :description, :restaurant_id)");
+
+
+        $resultat->execute([
+            'name' => $name,
+            'price' => $price,
+            'description' => $description,
+            'restaurant_id' => $restaurant_id
+        ]);
+
+    }
+
 }

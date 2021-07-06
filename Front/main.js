@@ -87,8 +87,23 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
         
         cardsPlats += cardPlat;
     })
+
+    formPlat = `<br><hr>
+    <div class="row">
+    <div class="mb-3">
+      <input type="text" class="form-control" id="formname" placeholder="name">
+    </div>
+    <div class="mb-3">
+      <input type="text" class="form-control" id="formprice" placeholder="prix">
+    </div>
+    <div class="mb-3">
+      <input type="text" class="form-control" id="formdesc" placeholder="description">
+      <input type="hidden" class="form-control" id="formrestaurant" value="${restaurant.id}">
+    </div>
+    <button type="submit" class="btn btn-success" id="formstart">Créer</button>
+    </div>`;
   
-    divPlats.innerHTML = cardsPlats;
+    divPlats.innerHTML = cardsPlats + formPlat;
   
     //Button pour revenir sur tout le restaurants
     document.querySelector('.retourRestaurants').addEventListener('click', event => {
@@ -101,6 +116,20 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
             supprimerUnPlat(bouton.value)
         })
     })
+
+    
+    //recuperation des info du formulaire
+    const formStart = document.querySelector('#formstart');
+    const formName = document.querySelector('#formname');
+    const formPrice = document.querySelector('#formprice');
+    const formDesc = document.querySelector('#formdesc');
+    const formRestaurant = document.querySelector('#formrestaurant');
+
+    //Button pour créé un plat
+    formStart.addEventListener('click', event =>{
+            addUnPlat(formName.value, formPrice.value, formDesc.value , formRestaurant.value)
+      })
+
   } 
 
   //Suppression d'un plat
@@ -116,3 +145,17 @@ function supprimerUnPlat(platId){
     maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     maRequete.send(params);
   } 
+
+  //add d'un plat
+  function addUnPlat(name, price, description, restaurant_id){
+    params= "name="+name+"&price="+price+"&description="+description+"&restaurant_id="+restaurant_id;
+
+    let maRequete = new XMLHttpRequest();
+    maRequete.open('POST', `http://localhost/PhpApiEval/Back/index.php?controller=plat&task=insertApi` )
+    maRequete.onload =  () => {
+        afficheUnRestaurant(restaurant_id);
+    }
+    maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    maRequete.send(params);
+  } 
+
