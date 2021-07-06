@@ -76,7 +76,6 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
     
     cardsPlats = "";
     plats.forEach(plat => {
-        countLikes(plat.id)
         cardPlat = `<div class="col-4 p-3" data-plat="${plat.id}">
         <div class="card" style="width: 18rem;">
             <div class="card-body">
@@ -168,21 +167,6 @@ function supprimerUnPlat(platId){
     maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     maRequete.send(params);
   } 
-
-    //Calculez de like
-    function countLikes(platId){
-        params= "id="+platId;
-
-        let maRequete = new XMLHttpRequest();
-        maRequete.open('POST', `http://localhost/PhpApiEval/Back/index.php?controller=like&task=countApi` )
-        maRequete.onload =  () => {
-
-        }
-        
-        maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        maRequete.send(params);     
-
-    }
 
     //add d'un like
   function addUnLike(plat_id, restaurant_id){
