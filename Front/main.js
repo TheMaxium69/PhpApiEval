@@ -76,14 +76,16 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
     
     cardsPlats = "";
     plats.forEach(plat => {
+        countLikes(plat.id)
         cardPlat = `<div class="col-4 p-3" data-plat="${plat.id}">
         <div class="card" style="width: 18rem;">
             <div class="card-body">
             <h5 class="card-title">${plat.name}</h5>
             <p class="card-text">${plat.price} euro</p>
             <p class="card-text">${plat.description}</p>
-            </div>  
-            <button value="${plat.id}" class="btn btn-danger delPlat">Supprimer le plat</button>  </div> </div>`;
+            <button value="${plat.id}" class="btn btn-danger delPlat">Supprimer le plat</button> 
+            <button value="${plat.id}" class="btn btn-info addLike">Ajoutez un like</button> 
+            </div>   </div> </div>`;
         
         cardsPlats += cardPlat;
     })
@@ -103,7 +105,7 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
     <button type="submit" class="btn btn-success" id="formstart">Créer</button>
     </div>`;
   
-    divPlats.innerHTML = cardsPlats + formPlat;
+    divPlats.innerHTML =  formPlat + cardsPlats;
   
     //Button pour revenir sur tout le restaurants
     document.querySelector('.retourRestaurants').addEventListener('click', event => {
@@ -114,6 +116,13 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
     document.querySelectorAll('.delPlat').forEach(bouton =>{
         bouton.addEventListener('click', event =>{
             supprimerUnPlat(bouton.value)
+        })
+    })
+    
+    //Button ajoutez un like
+    document.querySelectorAll('.addLike').forEach(bouton =>{
+        bouton.addEventListener('click', event =>{
+            addUnLike(bouton.value)
         })
     })
 
@@ -159,3 +168,33 @@ function supprimerUnPlat(platId){
     maRequete.send(params);
   } 
 
+    //Calculez de like
+    function countLikes(platId){
+        params= "id="+platId;
+
+        let maRequete = new XMLHttpRequest();
+        maRequete.open('POST', `http://localhost/PhpApiEval/Back/index.php?controller=like&task=countApi` )
+        maRequete.onload =  () => {
+            let response = JSON.parse(maRequete.responseText)
+            console.log(platId+" - "+response);
+
+        }
+        
+        maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        maRequete.send(params);     
+
+    }
+
+    //add d'un like
+  function addUnLike(plat_id){
+    params= "plat_id="+plat_id;
+
+    let maRequete = new XMLHttpRequest();
+    maRequete.open('POST', `http://localhost/PhpApiEval/Back/index.php?controller=like&task=insertApi` )
+    maRequete.onload =  () => {
+
+        console.log(maRequete.responseText)
+    }
+    maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    maRequete.send(params);
+  } 

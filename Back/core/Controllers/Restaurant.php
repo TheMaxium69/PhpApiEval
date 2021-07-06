@@ -48,6 +48,7 @@ class Restaurant extends Controller
         $modelPlat = new \Model\Plat();
         $plats = $modelPlat->findAllByRestaurants($restaurant_id);
 
+
         header("Access-Control-Allow-Origin: *");
 
         //Json
