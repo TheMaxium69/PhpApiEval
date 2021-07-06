@@ -8,7 +8,7 @@ namespace Controllers;
 class Exemple extends Controller
 {
 
-    //protected $modelName = \Model\Exemple::class;
+    protected $modelName = \Model\Exemple::class;
     
 
 
@@ -33,7 +33,7 @@ class Exemple extends Controller
 
         //on affiche
         \Rendering::render("exemple/exemple",
-            compact('user', 'gateaux', 'titreDeLaPage')
+            compact('user', 'exemple', 'titreDeLaPage')
         );
 
     }
@@ -50,7 +50,8 @@ class Exemple extends Controller
         header('Access-Control-Allow-Origin: *');
 
         //Json
-        // echo json_encode($gateaux);
+        echo json_encode(["test1"=>"truc1",
+                          "test2"=>"truc2"]);
 
     }
 
