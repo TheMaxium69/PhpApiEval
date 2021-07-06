@@ -14,6 +14,7 @@ class Plat extends Model
     public $price;
     public $description;
     public $restaurant_id;
+    public $nbLike;
 
 
     /**
@@ -51,6 +52,10 @@ class Plat extends Model
             'restaurant_id' => $restaurant_id
         ]);
 
+    }
+
+    function set(Plat $plat, string $nbLikes){
+        $plat->nbLike = $nbLikes;
     }
 
 }

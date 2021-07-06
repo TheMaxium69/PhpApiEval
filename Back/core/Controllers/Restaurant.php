@@ -49,6 +49,15 @@ class Restaurant extends Controller
         $plats = $modelPlat->findAllByRestaurants($restaurant_id);
 
 
+        foreach($plats as $plat){
+            $modelLike = new \Model\Like();
+            $nbLike = $modelLike->CountByPlat($plat->id);
+            
+            $modelPlat->set($plat, $nbLike);
+        }
+
+
+
         header("Access-Control-Allow-Origin: *");
 
         //Json

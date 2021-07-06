@@ -83,6 +83,7 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
             <h5 class="card-title">${plat.name}</h5>
             <p class="card-text">${plat.price} euro</p>
             <p class="card-text">${plat.description}</p>
+            <p class="card-text">${plat.nbLike}</p>
             <button value="${plat.id}" class="btn btn-danger delPlat">Supprimer le plat</button> 
             <button value="${plat.id}" class="btn btn-info addLike">Ajoutez un like</button> 
             </div>   </div> </div>`;
@@ -122,7 +123,7 @@ function faireCardRestaurantEtCardsPlats(restaurant, plats) {
     //Button ajoutez un like
     document.querySelectorAll('.addLike').forEach(bouton =>{
         bouton.addEventListener('click', event =>{
-            addUnLike(bouton.value)
+            addUnLike(bouton.value, restaurant.id)
         })
     })
 
@@ -175,8 +176,6 @@ function supprimerUnPlat(platId){
         let maRequete = new XMLHttpRequest();
         maRequete.open('POST', `http://localhost/PhpApiEval/Back/index.php?controller=like&task=countApi` )
         maRequete.onload =  () => {
-            let response = JSON.parse(maRequete.responseText)
-            console.log(platId+" - "+response);
 
         }
         
@@ -186,14 +185,13 @@ function supprimerUnPlat(platId){
     }
 
     //add d'un like
-  function addUnLike(plat_id){
+  function addUnLike(plat_id, restaurant_id){
     params= "plat_id="+plat_id;
 
     let maRequete = new XMLHttpRequest();
     maRequete.open('POST', `http://localhost/PhpApiEval/Back/index.php?controller=like&task=insertApi` )
     maRequete.onload =  () => {
-
-        console.log(maRequete.responseText)
+        afficheUnRestaurant(restaurant_id);
     }
     maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     maRequete.send(params);
